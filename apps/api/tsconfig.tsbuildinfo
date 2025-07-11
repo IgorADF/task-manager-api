@@ -1,0 +1,1 @@
+{"root":["./src/main.ts","./src/controllers/user.ts","./src/envs/envs.ts","./src/routes/_init.ts","./src/routes/users.ts"],"errors":true,"version":"5.8.3"}
