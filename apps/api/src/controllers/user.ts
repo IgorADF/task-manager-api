@@ -1,15 +1,20 @@
-import { FastifyReply, FastifyRequest } from "fastify";
+import { RouteFunction } from "@/@types/custom/route.types";
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
 import { Services, Repositories } from "lib-core";
 
 export class UserController {
-  async create(request: FastifyRequest, reply: FastifyReply) {
-    const rep = new Repositories.MongoUserRepository();
+  create(fastify: FastifyInstance): RouteFunction {
+    return async (request: FastifyRequest, reply: FastifyReply) => {
+      const service = Services.CreateUserService;
 
-    const service = Services.CreateUserService;
-    const serviceInstance = new service.Service(rep);
+      const parsedBody = service.CreateUserSchema.parse(request.body);
 
-    const parsedBody = service.CreateUserSchema.parse(request.body);
+      const rep = new Repositories.MongoUserRepository();
+      const serviceInstance = new service.Service(rep);
 
-    await serviceInstance.execute(parsedBody);
+      await serviceInstance.execute(parsedBody);
+    };
   }
+
+  async inviteToTeam(request: FastifyRequest, reply: FastifyReply) {}
 }

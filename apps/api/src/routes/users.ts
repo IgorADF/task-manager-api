@@ -4,5 +4,9 @@ import { FastifyInstance } from "fastify";
 const controller = new UserController();
 
 export function usersRoutes(fastify: FastifyInstance) {
-  fastify.post("/", controller.create);
+  fastify.post(
+    "/",
+    { preHandler: [fastify.authenticate] },
+    controller.create(fastify)
+  );
 }

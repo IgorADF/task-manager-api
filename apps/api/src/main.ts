@@ -1,7 +1,8 @@
-import Fastify from "fastify";
+import Fastify, { FastifyReply, FastifyRequest } from "fastify";
 import { initRoutes } from "@/routes/_init";
 import { envs } from "@/envs/envs";
 import { DB } from "lib-core";
+import fastifyJwt from "@fastify/jwt";
 
 const fastify = Fastify({
   logger: true,
@@ -14,6 +15,21 @@ async function runConfigs() {
     console.error("Failed to connect to the database:", error);
     throw error;
   }
+
+  fastify.register(fastifyJwt, {
+    secret: envs.JWT_SECRET,
+  });
+
+  fastify.decorate(
+    "authenticate",
+    async function (request: FastifyRequest, reply: FastifyReply) {
+      try {
+        await request.jwtVerify();
+      } catch (err) {
+        return reply.send(err);
+      }
+    }
+  );
 
   await initRoutes(fastify);
 }
