@@ -1,20 +1,24 @@
-import { RouteFunction } from "@/@types/custom/route.types";
+import { RouteFunction } from "@/@types/route.types";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { Services, Repositories } from "lib-core";
+import { Factories, ServiceErrors, Services } from "lib-core";
 
 export class UserController {
-  create(fastify: FastifyInstance): RouteFunction {
+  createUser(fastify: FastifyInstance): RouteFunction {
+    const { service, schema } = Factories.createUserFactory();
+
     return async (request: FastifyRequest, reply: FastifyReply) => {
-      const service = Services.CreateUserService;
+      const parsedBody = schema.parse(request.body);
 
-      const parsedBody = service.CreateUserSchema.parse(request.body);
+      try {
+        await service.execute(parsedBody);
+      } catch (error) {
+        if (error instanceof ServiceErrors.EntityAlreadyExist) {
+          reply.status(400).send({ error: "User already exists." });
+          return;
+        }
 
-      const rep = new Repositories.MongoUserRepository();
-      const serviceInstance = new service.Service(rep);
-
-      await serviceInstance.execute(parsedBody);
+        throw error;
+      }
     };
   }
-
-  async inviteToTeam(request: FastifyRequest, reply: FastifyReply) {}
 }

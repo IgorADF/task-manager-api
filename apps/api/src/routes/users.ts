@@ -7,6 +7,6 @@ export function usersRoutes(fastify: FastifyInstance) {
   fastify.post(
     "/",
     { preHandler: [fastify.authenticate] },
-    controller.create(fastify)
+    controller.createUser(fastify)
   );
 }

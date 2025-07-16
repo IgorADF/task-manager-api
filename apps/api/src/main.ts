@@ -3,6 +3,7 @@ import { initRoutes } from "@/routes/_init";
 import { envs } from "@/envs/envs";
 import { DB } from "lib-core";
 import fastifyJwt from "@fastify/jwt";
+import { globalErrorMiddleware } from "./middlewares/global-errors";
 
 const fastify = Fastify({
   logger: true,
@@ -32,6 +33,8 @@ async function runConfigs() {
   );
 
   await initRoutes(fastify);
+
+  fastify.setErrorHandler(globalErrorMiddleware);
 }
 
 async function boot() {
@@ -39,9 +42,7 @@ async function boot() {
 
   fastify
     .listen({ port: envs.SERVER_PORT })
-    .then(() => {
-      fastify.log.info(`Server listening!`);
-    })
+    .then(() => {})
     .catch((err) => {
       fastify.log.error(err);
       process.exit(1);

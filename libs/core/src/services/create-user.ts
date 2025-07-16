@@ -1,5 +1,7 @@
-import { UserReppositoryInterface } from "@/repositories/interfaces/user";
 import z from "zod";
+import { UserReppositoryInterface } from "@/repositories/interfaces/user";
+import { DefaultService } from "@/@types/services.types";
+import { EntityAlreadyExist } from "./errors/entity-already-exist";
 
 export const CreateUserSchema = z.object({
   name: z.string().min(1),
@@ -9,10 +11,12 @@ export const CreateUserSchema = z.object({
 
 export type CreateUserDTO = z.infer<typeof CreateUserSchema>;
 
-export class Service {
+export class CreateUserService implements DefaultService {
   constructor(private userRepository: UserReppositoryInterface) {}
 
   async execute(data: CreateUserDTO): Promise<void> {
+    const user = await this.userRepository.getByEmail(data.email);
+    if (user) throw new EntityAlreadyExist();
     await this.userRepository.create(data);
   }
 }

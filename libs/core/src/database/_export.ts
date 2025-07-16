@@ -1,1 +1,1 @@
-export * from "./_init";
+export * from "./init";

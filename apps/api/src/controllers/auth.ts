@@ -1,29 +1,22 @@
-import { RouteFunction } from "@/@types/custom/route.types";
+import { RouteFunction } from "@/@types/route.types";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { Repositories, Services } from "lib-core";
+import { Factories, ServiceErrors, Services } from "lib-core";
 
 export class AuthController {
-  authenticate(fastify: FastifyInstance): RouteFunction {
+  authUserSession(fastify: FastifyInstance): RouteFunction {
+    const { service } = Factories.authUserFactory();
+
     return async (request: FastifyRequest, reply: FastifyReply) => {
-      const service = Services.AuthUserService;
-
-      const parsedBody = service.AuthUserSchema.parse(request.body);
-
-      const rep = new Repositories.MongoUserRepository();
-      const serviceInstance = new service.Service(rep);
-      const user = await serviceInstance.execute(parsedBody.email);
-
-      if (user.password !== parsedBody.password) {
-        reply.status(401).send({ error: "Invalid credentials. " });
-        return;
-      }
-
-      const token = fastify.jwt.sign(
-        { email: user.email, sub: user._id.toString() },
-        { sub: user._id.toString() }
-      );
-
-      return { token };
+      // const parsedBody = schema.parse(request.body);
+      // try {
+      //   await service.execute(parsedBody);
+      // } catch (error) {
+      //   if (error instanceof ServiceErrors.EntityAlreadyExist) {
+      //     reply.status(400).send({ error: "User already exists." });
+      //     return;
+      //   }
+      //   throw error;
+      // }
     };
   }
 }

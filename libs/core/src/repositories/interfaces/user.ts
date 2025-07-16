@@ -1,7 +1,7 @@
-import { UserDoc, UserType } from "@/database/schemas/user.types";
+import { UserCreationType, UserType } from "@/@types/entitites/user.types";
 
 export interface UserReppositoryInterface {
-  create: (data: UserType) => Promise<void>;
-  getById: (id: string) => Promise<UserDoc | null>;
-  getByEmail: (email: string) => Promise<UserDoc | null>;
+  create: (data: UserCreationType) => Promise<void>;
+  getById: (id: string) => Promise<UserType | null>;
+  getByEmail: (email: string) => Promise<UserType | null>;
 }
