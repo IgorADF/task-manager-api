@@ -27,12 +27,12 @@ describe("GetUserByEmailService", () => {
     removeDb(db__id);
   });
 
-  it("Should throw EntityNotFoundError", async () => {
+  it("should throw EntityNotFoundError", async () => {
     const promise = service.execute("notexistinguser@gmail.com");
     await expect(promise).rejects.toBeInstanceOf(EntityNotFoundError);
   });
 
-  it("Should get user by email", async () => {
+  it("should get user by email", async () => {
     const user = await service.execute(test_user_entity.email);
     expect(user.id).toBeTruthy();
   });

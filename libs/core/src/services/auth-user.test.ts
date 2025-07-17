@@ -30,7 +30,7 @@ describe("AuthUserService", () => {
     removeDb(db__id);
   });
 
-  it("Should throw InvalidCredentialsError if a user there is no user with used email", async () => {
+  it("should throw InvalidCredentialsError if a user there is no user with used email", async () => {
     const promise = service.execute(
       "not-in-db-user-email@gmail.com",
       "random-password"
@@ -38,12 +38,12 @@ describe("AuthUserService", () => {
     await expect(promise).rejects.toBeInstanceOf(InvalidCredentialsError);
   });
 
-  it("Should throw InvalidCredentialsError if password is not the same", async () => {
+  it("should throw InvalidCredentialsError if password is not the same", async () => {
     const promise = service.execute(test_user_entity.email, "random-password");
     await expect(promise).rejects.toBeInstanceOf(InvalidCredentialsError);
   });
 
-  it("Should authenticate user", async () => {
+  it("should authenticate user", async () => {
     const user = await service.execute(
       test_user_entity.email,
       test_user_creation_entity.password

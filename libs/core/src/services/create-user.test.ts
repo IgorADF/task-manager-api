@@ -30,12 +30,12 @@ describe("CreateUserService", () => {
     removeDb(db__id);
   });
 
-  it("Should throw EntityAlreadyExist", async () => {
+  it("should throw EntityAlreadyExist", async () => {
     const promise = service.execute(test_user_creation_entity);
     await expect(promise).rejects.toBeInstanceOf(EntityAlreadyExist);
   });
 
-  it("Should not reject promise and create user", async () => {
+  it("should not reject promise and create user", async () => {
     const promise = service.execute({
       ...test_user_creation_entity,
       email: "newuseremail@gmail.com",
@@ -44,7 +44,7 @@ describe("CreateUserService", () => {
     await expect(promise).resolves.not.toThrow();
   });
 
-  it("Should not reject promise and create user", async () => {
+  it("should validate if user password was hashed after creation", async () => {
     const user_email = "newuseremail@gmail.com";
 
     await service.execute({
