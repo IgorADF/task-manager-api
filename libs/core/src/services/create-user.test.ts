@@ -1,8 +1,7 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { CreateUserService } from "./create-user.js";
 import { IMUserRepository } from "@/repositories/in-memory/user.js";
 import { createDb, removeDb } from "@/repositories/in-memory/config/default.js";
-import { afterEach } from "node:test";
 import { createTestUser } from "@/utils/tests/create-user.js";
 import { UserCreationType, UserType } from "@/@types/entitites/user.types.js";
 import { EntityAlreadyExist } from "./errors/entity-already-exist.js";
