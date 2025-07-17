@@ -1,10 +1,10 @@
 import { RouteFunction } from "@/@types/route.types";
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify";
-import { Factories, ServiceErrors, Services } from "lib-core";
+import { ServiceFactories, ServiceErrors, Services } from "lib-core";
 
 export class AuthController {
   authUserSession(fastify: FastifyInstance): RouteFunction {
-    const { service } = Factories.authUserFactory();
+    const { service } = ServiceFactories.authUserFactory();
 
     return async (request: FastifyRequest, reply: FastifyReply) => {
       // const parsedBody = schema.parse(request.body);
