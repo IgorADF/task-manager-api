@@ -23,7 +23,7 @@ describe("CreateUserService", () => {
     const { creation_entity, entity } = createTestUser();
     test_user_creation_entity = creation_entity;
     test_user_entity = entity;
-    rep.entities.push(entity);
+    rep._getDb().users.push(entity);
   });
 
   afterEach(() => {
@@ -42,5 +42,22 @@ describe("CreateUserService", () => {
     });
 
     await expect(promise).resolves.not.toThrow();
+  });
+
+  it("Should not reject promise and create user", async () => {
+    const user_email = "newuseremail@gmail.com";
+
+    await service.execute({
+      ...test_user_creation_entity,
+      email: user_email,
+    });
+
+    const users = rep._getDb().users.filter((u) => u.email === user_email);
+
+    expect(users.length).toBe(1);
+
+    const user = users[0];
+
+    expect(user.password).not.toBe(test_user_creation_entity.password);
   });
 });

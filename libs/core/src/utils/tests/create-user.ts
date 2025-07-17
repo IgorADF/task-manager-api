@@ -1,5 +1,6 @@
 import { UserCreationType, UserType } from "@/@types/entitites/user.types";
 import { randomUUID } from "node:crypto";
+import { hashPassword } from "../bcrypt";
 
 interface CreateTestUserInterface {
   entity: UserType;
@@ -17,6 +18,7 @@ export function createTestUser(): CreateTestUserInterface {
     entity: {
       id: randomUUID(),
       ...creation_entity,
+      password: hashPassword(creation_entity.password),
     },
     creation_entity,
   };

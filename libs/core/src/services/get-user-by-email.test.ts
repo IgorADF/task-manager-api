@@ -20,7 +20,7 @@ describe("GetUserByEmailService", () => {
 
     const { entity } = createTestUser();
     test_user_entity = entity;
-    rep.entities.push(entity);
+    rep._getDb().users.push(entity);
   });
 
   afterEach(() => {

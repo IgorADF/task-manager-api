@@ -1,7 +1,7 @@
-import { DefaultError } from "./_default";
+import { DefaultError } from "./default";
 
 export class EntityAlreadyExist extends DefaultError {
   constructor() {
-    super(`User already exist.`);
+    super(`Entity already exist. `);
   }
 }

@@ -1,7 +1,7 @@
-import { DefaultError } from "./_default";
+import { DefaultError } from "./default";
 
 export class EntityNotFoundError extends DefaultError {
   constructor() {
-    super(`Entity not found.`);
+    super(`Entity not found. `);
   }
 }

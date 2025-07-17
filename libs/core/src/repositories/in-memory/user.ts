@@ -7,28 +7,28 @@ export class IMUserRepository
   extends InMemoryDB
   implements UserReppositoryInterface
 {
-  entities: UserType[] = [];
-
   constructor(db_id: string) {
     super(db_id);
   }
 
-  async create(data: UserCreationType): Promise<void> {
+  async create(data: UserCreationType): Promise<UserType> {
     const new_entity: UserType = {
       ...data,
       id: randomUUID(),
     };
 
-    this.entities.push(new_entity);
+    this._getDb().users.push(new_entity);
+
+    return new_entity;
   }
 
   async getById(id: string) {
-    const user = this.entities.find((user) => user.id.toString() === id);
+    const user = this._getDb().users.find((user) => user.id === id);
     return user ? user : null;
   }
 
   async getByEmail(email: string) {
-    const user = this.entities.find((user) => user.email.toString() === email);
+    const user = this._getDb().users.find((user) => user.email === email);
     return user ? user : null;
   }
 }
