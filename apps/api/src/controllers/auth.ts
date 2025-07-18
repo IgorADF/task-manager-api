@@ -7,16 +7,11 @@ export class AuthController {
     const { service } = ServiceFactories.authUserFactory();
 
     return async (request: FastifyRequest, reply: FastifyReply) => {
-      // const parsedBody = schema.parse(request.body);
-      // try {
-      //   await service.execute(parsedBody);
-      // } catch (error) {
-      //   if (error instanceof ServiceErrors.EntityAlreadyExist) {
-      //     reply.status(400).send({ error: "User already exists." });
-      //     return;
-      //   }
-      //   throw error;
-      // }
+      const parsedBody = Services.AuthUserSchema.parse(request.body);
+      const user = await service.execute(parsedBody.email, parsedBody.password);
+
+      const token = fastify.jwt.sign({ email: user.email, sub: user.id });
+      return { token };
     };
   }
 }
